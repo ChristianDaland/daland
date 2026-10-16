@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="no" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daland Games — Spill fra gården</title>
+  <meta name="description" content="Gratis indie-spill rett i nettleseren. Egenutviklet på Løland Gård.">
+  <meta name="theme-color" content="#0C0F0E">
+  <link rel="icon" href="ella_01.jpg">
+
+  <!-- Sett tema før siden tegnes, så den ikke blinker -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. TEMA
+       ========================================================================== */
+    :root,
+    :root[data-theme="dark"] {
+      --bg: #0C0F0E;
+      --bg-2: #111614;
+      --surface: #161C1A;
+      --surface-2: #1D2522;
+      --glass: rgba(22, 28, 26, 0.72);
+      --text: #EEF2EF;
+      --muted: #95A39C;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --accent: #F2A541;
+      --accent-2: #FFCB7A;
+      --accent-ink: #1A1205;
+      --green: #43B581;
+      --glow-1: rgba(242, 165, 65, 0.16);
+      --glow-2: rgba(67, 181, 129, 0.12);
+      --shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+      --shadow-lg: 0 40px 80px -20px rgba(0, 0, 0, 0.75);
+      color-scheme: dark;
+    }
+
+    :root[data-theme="light"] {
+      --bg: #F6F3EC;
+      --bg-2: #EFEADF;
+      --surface: #FFFFFF;
+      --surface-2: #F4F0E7;
+      --glass: rgba(255, 255, 255, 0.78);
+      --text: #15191A;
+      --muted: #5E6A66;
+      --border: rgba(20, 25, 26, 0.09);
+      --border-strong: rgba(20, 25, 26, 0.18);
+      --accent: #E0902B;
+      --accent-2: #C2721A;
+      --accent-ink: #1A1205;
+      --green: #1F7A52;
+      --glow-1: rgba(224, 144, 43, 0.18);
+      --glow-2: rgba(31, 122, 82, 0.10);
+      --shadow: 0 1px 2px rgba(20,25,26,0.04), 0 24px 48px -16px rgba(20, 25, 26, 0.14);
+      --shadow-lg: 0 40px 80px -24px rgba(20, 25, 26, 0.25);
+      color-scheme: light;
+    }
+
+    /* ==========================================================================
+       2. BASE
+       ========================================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background-color .3s ease, color .3s ease;
+    }
+
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; color: inherit; }
+
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+
+    .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+    .display {
+      font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
+
+    /* Knapper */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      height: 52px; padding: 0 26px; border-radius: 14px; border: 1px solid transparent;
+      font-weight: 600; font-size: .98rem; cursor: pointer; white-space: nowrap;
+      transition: transform .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .btn svg { width: 18px; height: 18px; }
+    .btn-primary {
+      background: var(--accent); color: var(--accent-ink);
+      box-shadow: 0 10px 30px -8px var(--glow-1), 0 0 0 1px rgba(255,255,255,.1) inset;
+    }
+    .btn-primary:hover { transform: translateY(-2px); background: var(--accent-2); }
+    .btn-ghost { background: var(--surface); border-color: var(--border-strong); }
+    .btn-ghost:hover { transform: translateY(-2px); border-color: var(--text); }
+    .btn-sm { height: 40px; padding: 0 16px; border-radius: 11px; font-size: .9rem; }
+
+    /* ==========================================================================
+       3. NAVIGASJON
+       ========================================================================== */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+      backdrop-filter: saturate(160%) blur(16px);
+      -webkit-backdrop-filter: saturate(160%) blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s ease;
+    }
+    .nav.scrolled { border-bottom-color: var(--border); }
+    .nav-inner { display: flex; align-items: center; gap: 32px; height: 72px; }
+
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: -.01em; }
+    .brand-mark {
+      width: 40px; height: 40px; border-radius: 50%; padding: 2px; flex: none;
+      background: conic-gradient(from 200deg, var(--accent), #E2683A, var(--accent));
+      box-shadow: 0 6px 18px -6px var(--glow-1);
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    .brand-mark img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 30%; border: 2px solid var(--bg); }
+    .brand:hover .brand-mark { transform: rotate(-8deg) scale(1.06); }
+    .brand-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.2rem; font-weight: 800; }
+    .brand-name span { color: var(--muted); font-weight: 600; }
+
+    .nav-links { display: flex; gap: 6px; margin-left: 12px; }
+    .nav-links a {
+      padding: 8px 14px; border-radius: 10px; font-size: .93rem; font-weight: 500; color: var(--muted);
+      transition: color .2s ease, background-color .2s ease;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+
+    .nav-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+    .icon-btn {
+      width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
+      background: var(--surface); border: 1px solid var(--border); cursor: pointer;
+      transition: border-color .2s ease, transform .2s ease;
+    }
+    .icon-btn:hover { border-color: var(--border-strong); transform: rotate(-12deg); }
+    .icon-btn svg { width: 18px; height: 18px; }
+    [data-theme="dark"] .icon-sun, [data-theme="light"] .icon-moon { display: block; }
+    [data-theme="dark"] .icon-moon, [data-theme="light"] .icon-sun { display: none; }
+
+    /* ==========================================================================
+       4. HERO
+       ========================================================================== */
+    .hero { position: relative; padding: 72px 0 112px; isolation: isolate; }
+    .hero::before {
+      content: ""; position: absolute; inset: -72px 0 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(600px 420px at 78% 30%, var(--glow-1), transparent 70%),
+        radial-gradient(520px 380px at 12% 70%, var(--glow-2), transparent 70%);
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: -72px 0 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+      opacity: .6;
+    }
+
+    .hero-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 72px; align-items: center; }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 7px 14px 7px 10px; border-radius: 99px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: .85rem; font-weight: 500; color: var(--muted);
+    }
+    .pulse { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+    .pulse::after {
+      content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--green);
+      animation: pulse 2s ease-out infinite;
+    }
+    @keyframes pulse { from { opacity: .8; transform: scale(.6); } to { opacity: 0; transform: scale(1.6); } }
+
+    .hero h1 { font-size: clamp(3rem, 7vw, 5.8rem); margin: 28px 0 24px; }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(100deg, var(--accent) 10%, #E2683A 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero-lead { font-size: clamp(1.05rem, 1.6vw, 1.22rem); color: var(--muted); max-width: 500px; }
+
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+
+    .hero-facts { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 52px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .fact { display: flex; align-items: center; gap: 12px; font-size: .92rem; color: var(--muted); }
+    .fact svg { width: 20px; height: 20px; color: var(--accent); flex: none; }
+    .fact strong { color: var(--text); font-weight: 600; }
+
+    /* Ella som dus strektegning i bakgrunnen */
+    .hero-sketch {
+      position: absolute; z-index: -1; pointer-events: none;
+      top: -40px; left: 26%; width: min(780px, 70vw); aspect-ratio: 1;
+      background: var(--text);
+      -webkit-mask: url("ella_sketch_01.png") center / contain no-repeat;
+      mask: url("ella_sketch_01.png") center / contain no-repeat;
+      opacity: .085;
+    }
+    [data-theme="light"] .hero-sketch { opacity: .11; }
+
+    /* Utvalgte spill – stablede kort */
+    .hero-media { position: relative; padding: 48px 24px 0 0; }
+    .show-card {
+      display: block; border-radius: 28px; overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow-lg);
+      transition: transform .6s cubic-bezier(.16,1,.3,1), border-color .3s ease;
+    }
+    .show-card .card-art { aspect-ratio: 4 / 3; }
+    .show-card.back {
+      position: absolute; top: 0; right: 0; width: 58%;
+      transform: rotate(7deg); opacity: .92;
+    }
+    .show-card.back .card-art { aspect-ratio: 1; }
+    .show-card.front { position: relative; width: 88%; transform: rotate(-2deg); }
+    .hero-media:hover .show-card.front { transform: rotate(0deg) translateY(-6px); border-color: var(--accent); }
+    .hero-media:hover .show-card.back { transform: rotate(10deg) translateX(10px); }
+    .show-info { display: flex; align-items: center; gap: 16px; padding: 20px 22px; }
+    .featured-meta { flex: 1; min-width: 0; }
+    .featured-meta small { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+    .featured-meta strong { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; }
+    .featured-meta span { font-size: .9rem; color: var(--muted); }
+    .play-round {
+      width: 52px; height: 52px; border-radius: 50%; flex: none; display: grid; place-items: center;
+      background: var(--accent); color: var(--accent-ink);
+      box-shadow: 0 10px 24px -8px var(--glow-1);
+    }
+    .play-round svg { width: 16px; height: 16px; margin-left: 2px; }
+
+    /* ==========================================================================
+       5. FORDELER-STRIPE
+       ========================================================================== */
+    .perks {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border); border-radius: 24px; background: var(--surface);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .perk { padding: 32px; display: flex; gap: 18px; }
+    .perk + .perk { border-left: 1px solid var(--border); }
+    .perk-icon {
+      width: 46px; height: 46px; border-radius: 13px; flex: none; display: grid; place-items: center;
+      background: var(--surface-2); color: var(--accent); border: 1px solid var(--border);
+    }
+    .perk-icon svg { width: 22px; height: 22px; }
+    .perk h3 { font-size: 1.02rem; font-weight: 600; margin-bottom: 4px; }
+    .perk p { font-size: .92rem; color: var(--muted); line-height: 1.55; }
+
+    /* ==========================================================================
+       6. SPILLBIBLIOTEK
+       ========================================================================== */
+    .section { padding: 120px 0 0; }
+
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-bottom: 40px; }
+    .section-head h2 { font-size: clamp(2.2rem, 4.5vw, 3.4rem); margin-top: 16px; }
+    .section-head h2 sup {
+      font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 600; letter-spacing: 0;
+      vertical-align: super; color: var(--muted); margin-left: 6px;
+    }
+
+    .toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+    .search {
+      position: relative; display: flex; align-items: center;
+    }
+    .search svg { position: absolute; left: 14px; width: 18px; height: 18px; color: var(--muted); pointer-events: none; }
+    .search input {
+      width: 240px; height: 44px; padding: 0 44px 0 42px; border-radius: 12px;
+      background: var(--surface); border: 1px solid var(--border); outline: none;
+      transition: border-color .2s ease, width .3s ease;
+    }
+    .search input::placeholder { color: var(--muted); }
+    .search input:focus { border-color: var(--accent); }
+    .search kbd {
+      position: absolute; right: 10px; font: 600 .75rem 'Inter', sans-serif; color: var(--muted);
+      padding: 2px 8px; border-radius: 6px; border: 1px solid var(--border-strong);
+    }
+
+    .chips { display: flex; gap: 6px; padding: 4px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); }
+    .chip {
+      height: 36px; padding: 0 14px; border-radius: 10px; border: 0; background: transparent; cursor: pointer;
+      font-size: .88rem; font-weight: 500; color: var(--muted);
+      transition: background-color .2s ease, color .2s ease;
+    }
+    .chip:hover { color: var(--text); }
+    .chip[aria-pressed="true"] { background: var(--surface-2); color: var(--text); box-shadow: 0 0 0 1px var(--border-strong) inset; }
+
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+
+    .card {
+      position: relative; display: flex; flex-direction: column;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 24px; overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .45s cubic-bezier(.16,1,.3,1), border-color .3s ease, box-shadow .45s ease;
+    }
+    a.card:hover { transform: translateY(-6px); border-color: var(--border-strong); box-shadow: var(--shadow-lg); }
+
+    .card-art { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+    .card-art svg { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform .7s cubic-bezier(.16,1,.3,1); }
+    a.card:hover .card-art svg { transform: scale(1.06); }
+    /* Korn-tekstur gir illustrasjonene en mer "trykt" følelse */
+    .card-art::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .art-yatzy   { background: radial-gradient(120% 100% at 30% 0%, #2E7D57 0%, #174A33 55%, #0E2F21 100%); }
+    .art-stikka  { background: radial-gradient(120% 100% at 70% 0%, #F2A541 0%, #D4652F 55%, #8E3A1E 100%); }
+    .art-shuffle { background: radial-gradient(120% 100% at 50% 0%, #4B7FA8 0%, #284C6E 55%, #172E45 100%); }
+    .art-streken { background: radial-gradient(120% 100% at 30% 0%, #8C7DF2 0%, #4E3FBA 55%, #271C6E 100%); }
+    .art-arena   { background: radial-gradient(120% 100% at 50% 0%, #C24A8A 0%, #6A2063 55%, #300E36 100%); }
+    .art-poker   { background: radial-gradient(120% 100% at 40% 0%, #C0434F 0%, #7A1F2E 55%, #3D0C16 100%); }
+    .art-blackjack { background: radial-gradient(120% 100% at 60% 0%, #22A799 0%, #0F5E58 55%, #072E2C 100%); }
+    .art-pinball { background: radial-gradient(120% 100% at 50% 0%, #4F6BFF 0%, #22308F 55%, #0D1240 100%); }
+
+    .badges { position: absolute; top: 14px; left: 14px; z-index: 2; display: flex; gap: 6px; }
+    .badge {
+      padding: 4px 10px; border-radius: 8px; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      background: rgba(0,0,0,.42); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .badge.new { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+    .badge.soon { background: rgba(255,255,255,.88); color: #1A1A1A; border-color: transparent; }
+    .badge.hybrid { background: rgba(255,255,255,.92); color: #1A1A1A; border-color: transparent; }
+
+    .card-body { display: flex; flex-direction: column; flex: 1; padding: 24px 24px 22px; }
+    .card-kicker { font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .card h3 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.55rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: .95rem; flex: 1; }
+
+    .card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { font-size: .78rem; font-weight: 500; padding: 4px 10px; border-radius: 8px; background: var(--surface-2); color: var(--muted); }
+
+    .card-cta { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: .92rem; color: var(--accent); }
+    .card-cta svg { width: 16px; height: 16px; transition: transform .3s ease; }
+    a.card:hover .card-cta svg { transform: translateX(4px); }
+
+    .card.is-soon .card-art { filter: saturate(.55); }
+    .card.is-soon .card-cta { color: var(--muted); }
+
+    /* Plassholder for kommende spill */
+    .card-more {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+      gap: 14px; min-height: 380px; padding: 32px;
+      border: 1.5px dashed var(--border-strong); border-radius: 24px; color: var(--muted);
+    }
+    .card-more .plus {
+      width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center;
+      background: var(--surface); border: 1px solid var(--border); color: var(--accent);
+    }
+    .card-more .plus svg { width: 24px; height: 24px; }
+    .card-more strong { color: var(--text); font-size: 1.1rem; }
+    .card-more p { font-size: .92rem; max-width: 240px; }
+
+    .empty { grid-column: 1 / -1; text-align: center; padding: 64px 24px; color: var(--muted); }
+
+    /* ==========================================================================
+       7. ELLA
+       ========================================================================== */
+    .dedication {
+      position: relative; overflow: hidden; isolation: isolate;
+      display: flex; align-items: center; justify-content: center; gap: 18px;
+      padding: 56px 32px; border-radius: 28px; text-align: center;
+      background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+    }
+    .dedication-sketch {
+      position: absolute; z-index: -1; pointer-events: none;
+      right: 4%; top: 50%; transform: translateY(-50%);
+      height: 190%; aspect-ratio: 825 / 1100;
+      background: var(--text);
+      -webkit-mask: url("ella_sketch_02.png") center / contain no-repeat;
+      mask: url("ella_sketch_02.png") center / contain no-repeat;
+      opacity: .12;
+    }
+    .dedication img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: center 25%; border: 2px solid var(--accent); flex: none; }
+    .dedication p { font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(1.2rem, 2.4vw, 1.6rem); font-weight: 600; letter-spacing: -.01em; }
+    .heart { color: #E5533D; }
+
+    /* ==========================================================================
+       8. FOOTER
+       ========================================================================== */
+    footer { margin-top: 120px; border-top: 1px solid var(--border); background: var(--bg-2); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding: 40px 24px; }
+    .footer-links { display: flex; gap: 24px; font-size: .92rem; color: var(--muted); }
+    .footer-links a:hover { color: var(--text); }
+    .copyright { font-size: .88rem; color: var(--muted); }
+
+    /* ==========================================================================
+       9. ANIMASJONER & RESPONSIVT
+       ========================================================================== */
+    .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+    .js .reveal.active { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+      .hero-media { max-width: 520px; width: 100%; margin: 0 auto; }
+      .hero-sketch { left: 10%; top: 20px; width: 90vw; }
+      .perks { grid-template-columns: 1fr; }
+      .perk + .perk { border-left: 0; border-top: 1px solid var(--border); }
+      .dedication-sketch { opacity: .08; right: -10%; }
+    }
+
+    @media (max-width: 760px) {
+      .container { padding: 0 16px; }
+      .nav-links { display: none; }
+      .nav-actions .btn { display: none; }
+      .hero { padding: 40px 0 80px; }
+      .hero-facts { gap: 16px; flex-direction: column; }
+      .hero-media { padding: 32px 12px 0 0; }
+      .show-card.front { width: 92%; }
+      .show-info { padding: 16px; }
+      .featured-meta strong { font-size: 1.25rem; }
+      .play-round { width: 44px; height: 44px; }
+      .section { padding-top: 88px; }
+      .toolbar, .search, .search input { width: 100%; }
+      .chips { width: 100%; overflow-x: auto; }
+      .chip { flex: 1; white-space: nowrap; }
+      .search kbd { display: none; }
+      .games-grid { grid-template-columns: 1fr; }
+      .dedication { flex-direction: column; padding: 44px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; padding: 32px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== NAVIGASJON ===================== -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#" class="brand" aria-label="Daland Games – til toppen">
+        <span class="brand-mark"><img src="ella_01.jpg" alt=""></span>
+        <span class="brand-name">Daland <span>Games</span></span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#spill">Spill</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeToggle" aria-label="Bytt mellom lyst og mørkt tema">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <a href="#spill" class="btn btn-primary btn-sm">Spill nå</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero">
+    <div class="hero-sketch" aria-hidden="true"></div>
+    <div class="container hero-grid">
+      <div class="reveal">
+        <span class="pill"><span class="pulse"></span>Gratis spill rett i nettleseren</span>
+        <h1 class="display">Spill fra<br><em>gården.</em></h1>
+        <p class="hero-lead">Egenutviklede spill fra Løland Gård – fra klassiske terninger til hybridspill der mobilen er kontrollen.</p>
+
+        <div class="hero-cta">
+          <a href="https://christiandaland.github.io/yatzy/" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+            Spill Yatzy 3D
+          </a>
+          <a href="#spill" class="btn btn-ghost">Se alle spill</a>
+        </div>
+
+        <div class="hero-facts">
+          <div class="fact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <span><strong>Ingen nedlasting</strong> – klikk og spill</span>
+          </div>
+          <div class="fact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
+            <span><strong>Mobil og PC</strong> – overalt</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-media reveal">
+        <a href="Stikka/" class="show-card back" aria-label="Kaste på stikka">
+          <div class="card-art art-stikka" data-art="stikka"></div>
+        </a>
+        <a href="https://christiandaland.github.io/yatzy/" class="show-card front" aria-label="Utvalgt spill: Yatzy 3D – spill nå">
+          <div class="card-art art-yatzy" data-art="yatzy">
+            <div class="badges"><span class="badge new">Utvalgt</span></div>
+          </div>
+          <div class="show-info">
+            <span class="featured-meta">
+              <small>Utvalgt spill</small>
+              <strong>Yatzy 3D</strong>
+              <span>Realistiske 3D-terninger og poengskjema</span>
+            </span>
+            <span class="play-round"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== FORDELER ===================== -->
+  <div class="container">
+    <section class="perks reveal" aria-label="Hvorfor Daland Games">
+      <div class="perk">
+        <div class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+        <div><h3>Rett i nettleseren</h3><p>Ingen konto, ingen installasjon. Åpne et spill og sett i gang.</p></div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="14" height="10" rx="2"/><rect x="16" y="9" width="6" height="11" rx="1.5"/><path d="M6 18h6"/></svg></div>
+        <div><h3>Mobilen som kontroll</h3><p>Utvalgte spill lar mobilen styre spillet på storskjermen.</p></div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V10l9-6 9 6v11"/><path d="M9 21v-6h6v6"/></svg></div>
+        <div><h3>Laget på Løland Gård</h3><p>Egenutviklet fra bunnen av – ett spill om gangen, med omtanke.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== SPILLBIBLIOTEK ===================== -->
+  <main class="section" id="spill">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Spillbiblioteket</span>
+          <h2 class="display">Alle spill<sup id="gameCount"></sup></h2>
+        </div>
+        <div class="toolbar">
+          <label class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="search" id="search" placeholder="Søk etter spill" aria-label="Søk etter spill" autocomplete="off">
+            <kbd>/</kbd>
+          </label>
+          <div class="chips" role="group" aria-label="Filtrer spill">
+            <button class="chip" data-filter="alle" aria-pressed="true">Alle</button>
+            <button class="chip" data-filter="nettleser" aria-pressed="false">Nettleser</button>
+            <button class="chip" data-filter="hybrid" aria-pressed="false">Hybrid</button>
+            <button class="chip" data-filter="kort" aria-pressed="false">Kortspill</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="games-grid" id="gamesGrid"></div>
+    </div>
+  </main>
+
+  <!-- ===================== ELLA ===================== -->
+  <section class="section" aria-label="Til minne om Ella">
+    <div class="container">
+      <div class="dedication reveal">
+        <div class="dedication-sketch" aria-hidden="true"></div>
+        <img src="ella_01.jpg" alt="Beagelen Ella" loading="lazy">
+        <p>Inspirert og voktet av vår kjære beagle <span class="heart">❤</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="container footer-inner">
+      <a href="#" class="brand">
+        <span class="brand-mark"><img src="ella_01.jpg" alt=""></span>
+        <span class="brand-name">Daland <span>Games</span></span>
+      </a>
+      <div class="footer-links">
+        <a href="#spill">Spill</a>
+      </div>
+      <p class="copyright">© <span id="year">2026</span> Daland Games · Løland Gård</p>
+    </div>
+  </footer>
+
+  <script>
+    /* ==========================================================================
+       SPILLDATA — legg til nye spill her.
+       status: "live" (spillbart) eller "kommer" (kommer snart)
+       tags:   brukes av filterknappene ("3d", "multiplayer")
+       art:    "yatzy" | "stikka" | "shuffle" (illustrasjonene nederst)
+       ========================================================================== */
+    const GAMES = [
+      {
+        title: 'Yatzy 3D',
+        kicker: 'Terninger',
+        description: 'Klassisk Yatzy med realistiske 3D-terninger og poengskjema.',
+        url: 'https://christiandaland.github.io/yatzy/',
+        tags: ['nettleser'],
+        labels: ['3D', 'Klassiker'],
+        art: 'yatzy'
+      },
+      {
+        title: 'Kaste på stikka',
+        kicker: 'Presisjon',
+        description: 'Det gode gamle kaste på stikka-spillet. Kast mynt, kom nærmest, og vinn konkurrentenes mynter!',
+        url: 'Stikka/',
+        tags: ['nettleser'],
+        labels: ['Klassiker'],
+        art: 'stikka'
+      },
+      {
+        title: 'Streken',
+        kicker: 'Tegn og løs',
+        description: 'Tegn broer og hjelp Streken over alle hindringene!',
+        url: 'streken/',
+        tags: ['nettleser'],
+        labels: ['Puslespill'],
+        art: 'streken'
+      },
+      {
+        title: 'Kamparena',
+        kicker: 'Fotball / puck',
+        description: 'Flerbruker fotball/puck-arena med opptil 6 spillere. Styr med mobilen og følg kampen på storskjerm!',
+        url: 'https://hybrid-bordspill-6p.onrender.com/score.html',
+        newTab: true,
+        hybrid: true,
+        tags: ['hybrid'],
+        labels: ['Opptil 6 spillere'],
+        art: 'arena'
+      },
+      {
+        title: 'Hybrid Shuffleboard',
+        kicker: 'Bordspill',
+        description: 'Projektorbasert shuffleboard med fysikk, hindringer og mobilen som sprettspill-kontroll!',
+        url: 'https://hybrid-bordspill.onrender.com/',
+        hybrid: true,
+        tags: ['hybrid'],
+        labels: ['Projektor'],
+        art: 'shuffle'
+      },
+      {
+        title: 'Hybrid Poker',
+        kicker: 'Kortspill',
+        description: "Texas Hold'em/Omaha med hybridbord – bordet er på PC/pad, dine kort er på mobilen. Spill med ekte sjetonger.",
+        // Åpner både spillet og bordet i hver sin fane
+        open: ['https://hybrid-poker-9uc7.onrender.com/', 'https://hybrid-poker-9uc7.onrender.com/board.html'],
+        hybrid: true,
+        tags: ['hybrid', 'kort'],
+        labels: ["Hold'em", 'Omaha'],
+        art: 'poker'
+      },
+      {
+        title: 'Hybrid Blackjack',
+        kicker: 'Kortspill',
+        description: 'Klassisk Blackjack med hybridbord – spill på iPad eller mobil.',
+        url: 'https://hybrid-blackjack.onrender.com/',
+        hybrid: true,
+        tags: ['hybrid', 'kort'],
+        labels: ['iPad / mobil'],
+        art: 'blackjack'
+      },
+      {
+        title: 'Pinball',
+        kicker: 'Flipperspill',
+        description: 'Flipperspill på storskjerm med mobilen som flipperknapper. Velg maskin – GårdsPengBall eller RomPengBall – og jakt rekorden!',
+        // Åpner hovedsiden (QR og kø), brettet og toppskjermen i hver sin fane
+        open: ['https://pinball-sby4.onrender.com/', 'https://pinball-sby4.onrender.com/pinball.html', 'https://pinball-sby4.onrender.com/score.html'],
+        hybrid: true,
+        tags: ['hybrid'],
+        labels: ['3 skjermer', 'Toppliste'],
+        art: 'pinball'
+      }
+    ];
+
+    /* Spillkort-figur til poker og blackjack */
+    const playingCard = (x, y, rot, rank, suit, red) => `
+      <g transform="translate(${x} ${y}) rotate(${rot})">
+        <rect x="3" y="6" width="72" height="100" rx="9" fill="rgba(0,0,0,.3)"/>
+        <rect width="72" height="100" rx="9" fill="#FFFDF8"/>
+        <g font-family="Georgia, serif" font-weight="700" fill="${red ? '#C8323C' : '#1A1A1A'}">
+          <text x="10" y="24" font-size="20">${rank}</text>
+          <text x="36" y="68" font-size="38" text-anchor="middle">${suit}</text>
+        </g>
+      </g>`;
+    const chipStack = (x, y, n, color) => Array.from({ length: n }, (_, i) => `
+      <ellipse cx="${x}" cy="${y - i * 8 + 3}" rx="26" ry="9" fill="rgba(0,0,0,.35)"/>
+      <ellipse cx="${x}" cy="${y - i * 8}" rx="26" ry="9" fill="${color}" stroke="#fff" stroke-width="3" stroke-dasharray="7 7"/>`).join('');
+
+    /* Illustrasjoner (SVG) — én per spill */
+    const ART = {
+      yatzy: `
+        <svg viewBox="0 0 400 250" aria-hidden="true">
+          <defs>
+            <linearGradient id="dieA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E4DDCF"/></linearGradient>
+            <radialGradient id="pip" cx=".35" cy=".35"><stop offset="0" stop-color="#3A3A3A"/><stop offset="1" stop-color="#111"/></radialGradient>
+          </defs>
+          <ellipse cx="200" cy="205" rx="130" ry="14" fill="rgba(0,0,0,.28)"/>
+          <g opacity=".35" transform="translate(292 58) rotate(22)"><rect width="46" height="46" rx="10" fill="url(#dieA)"/><circle cx="23" cy="23" r="5" fill="url(#pip)"/></g>
+          <g transform="translate(108 78) rotate(-14)">
+            <rect x="4" y="8" width="104" height="104" rx="22" fill="rgba(0,0,0,.25)"/>
+            <rect width="104" height="104" rx="22" fill="url(#dieA)"/>
+            <circle cx="27" cy="27" r="9" fill="url(#pip)"/><circle cx="77" cy="27" r="9" fill="url(#pip)"/>
+            <circle cx="52" cy="52" r="9" fill="url(#pip)"/>
+            <circle cx="27" cy="77" r="9" fill="url(#pip)"/><circle cx="77" cy="77" r="9" fill="url(#pip)"/>
+          </g>
+          <g transform="translate(212 96) rotate(16)">
+            <rect x="4" y="8" width="96" height="96" rx="20" fill="rgba(0,0,0,.25)"/>
+            <rect width="96" height="96" rx="20" fill="url(#dieA)"/>
+            <circle cx="25" cy="25" r="8.5" fill="url(#pip)"/><circle cx="71" cy="25" r="8.5" fill="url(#pip)"/>
+            <circle cx="25" cy="48" r="8.5" fill="url(#pip)"/><circle cx="71" cy="48" r="8.5" fill="url(#pip)"/>
+            <circle cx="25" cy="71" r="8.5" fill="url(#pip)"/><circle cx="71" cy="71" r="8.5" fill="url(#pip)"/>
+          </g>
+        </svg>`,
+
+      stikka: `
+        <svg viewBox="0 0 400 250" aria-hidden="true">
+          <defs>
+            <linearGradient id="coin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE29A"/><stop offset="1" stop-color="#C9922F"/></linearGradient>
+            <linearGradient id="stick" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5A3518"/><stop offset=".45" stop-color="#9A6232"/><stop offset="1" stop-color="#4A2B12"/></linearGradient>
+          </defs>
+          <g fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2">
+            <ellipse cx="200" cy="190" rx="150" ry="34"/>
+            <ellipse cx="200" cy="190" rx="95" ry="21"/>
+            <ellipse cx="200" cy="190" rx="44" ry="10"/>
+          </g>
+          <path d="M60 60 Q 140 -10 214 108" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2.5" stroke-dasharray="2 9" stroke-linecap="round"/>
+          <ellipse cx="200" cy="191" rx="14" ry="4" fill="rgba(0,0,0,.35)"/>
+          <rect x="193" y="72" width="14" height="120" rx="4" fill="url(#stick)"/>
+          <ellipse cx="200" cy="72" rx="7" ry="2.5" fill="#B87A44"/>
+          <g>
+            <ellipse cx="232" cy="198" rx="18" ry="6" fill="#8E6420"/><ellipse cx="232" cy="195" rx="18" ry="6" fill="url(#coin)"/>
+            <ellipse cx="160" cy="210" rx="18" ry="6" fill="#8E6420"/><ellipse cx="160" cy="207" rx="18" ry="6" fill="url(#coin)"/>
+            <ellipse cx="290" cy="216" rx="18" ry="6" fill="#8E6420"/><ellipse cx="290" cy="213" rx="18" ry="6" fill="url(#coin)"/>
+          </g>
+          <g transform="translate(214 112) rotate(-28)">
+            <ellipse rx="18" ry="7" fill="#8E6420" cy="2"/><ellipse rx="18" ry="7" fill="url(#coin)"/>
+          </g>
+        </svg>`,
+
+      streken: `
+        <svg viewBox="0 0 400 250" aria-hidden="true">
+          <path d="M0 250 V158 Q50 146 122 154 L134 250 Z" fill="rgba(0,0,0,.32)"/>
+          <path d="M276 250 L286 160 Q340 150 400 142 V250 Z" fill="rgba(0,0,0,.32)"/>
+          <path d="M122 154 C 165 186, 235 188, 284 160" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+          <path d="M124 158 C 168 190, 232 191, 282 165" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round"/>
+          <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="82" cy="112" r="9"/>
+            <path d="M82 121 V138 M82 138 L73 152 M82 138 L91 152 M82 127 L71 135 M82 127 L94 120"/>
+          </g>
+          <path d="M360 144 V102" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <path d="M360 102 L386 111 L360 120 Z" fill="#F2A541"/>
+          <g transform="translate(290 156) rotate(-38)">
+            <polygon points="0,-7 -18,0 0,7" fill="#F2D3A2"/>
+            <polygon points="-12,-2.4 -18,0 -12,2.4" fill="#2A2A2A"/>
+            <rect x="0" y="-7" width="74" height="14" fill="#F5C451"/>
+            <rect x="0" y="-7" width="74" height="4" fill="#FFE08A"/>
+            <rect x="74" y="-7" width="8" height="14" fill="#B9B9B9"/>
+            <rect x="82" y="-7" width="12" height="14" rx="3" fill="#E5533D"/>
+          </g>
+        </svg>`,
+
+      arena: `
+        <svg viewBox="0 0 400 250" aria-hidden="true">
+          <polygon points="92,56 308,56 362,222 38,222" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.7)" stroke-width="2.5" stroke-linejoin="round"/>
+          <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2">
+            <line x1="65" y1="139" x2="335" y2="139"/>
+            <ellipse cx="200" cy="139" rx="44" ry="15"/>
+            <rect x="176" y="46" width="48" height="10" rx="2"/>
+            <rect x="166" y="222" width="68" height="12" rx="2"/>
+          </g>
+          <g stroke="#fff" stroke-width="2.5">
+            <ellipse cx="140" cy="102" rx="11" ry="5" fill="rgba(0,0,0,.3)" stroke="none"/><circle cx="140" cy="94" r="9" fill="#F2A541"/>
+            <ellipse cx="262" cy="106" rx="11" ry="5" fill="rgba(0,0,0,.3)" stroke="none"/><circle cx="262" cy="98" r="9" fill="#43B581"/>
+            <ellipse cx="204" cy="86" rx="10" ry="4" fill="rgba(0,0,0,.3)" stroke="none"/><circle cx="204" cy="79" r="8" fill="#F5C451"/>
+            <ellipse cx="116" cy="190" rx="13" ry="6" fill="rgba(0,0,0,.3)" stroke="none"/><circle cx="116" cy="180" r="11" fill="#E5533D"/>
+            <ellipse cx="292" cy="186" rx="13" ry="6" fill="rgba(0,0,0,.3)" stroke="none"/><circle cx="292" cy="176" r="11" fill="#5DADE2"/>
+            <ellipse cx="182" cy="200" rx="13" ry="6" fill="rgba(0,0,0,.3)" stroke="none"/><circle cx="182" cy="190" r="11" fill="#C39BD3"/>
+          </g>
+          <ellipse cx="226" cy="152" rx="10" ry="4.5" fill="#1A1A1A"/><ellipse cx="226" cy="149" rx="10" ry="4.5" fill="#fff"/>
+          <path d="M226 144 Q 214 120 206 100" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>
+        </svg>`,
+
+      poker: `
+        <svg viewBox="0 0 400 250" aria-hidden="true">
+          <ellipse cx="200" cy="215" rx="150" ry="16" fill="rgba(0,0,0,.25)"/>
+          ${chipStack(92, 206, 3, '#2E6BD6')}
+          ${chipStack(310, 206, 5, '#1A1A1A')}
+          ${playingCard(128, 66, -12, 'A', '♠', false)}
+          ${playingCard(196, 58, 10, 'K', '♥', true)}
+        </svg>`,
+
+      blackjack: `
+        <svg viewBox="0 0 400 250" aria-hidden="true">
+          <path d="M50 70 Q200 10 350 70" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-dasharray="5 7"/>
+          <ellipse cx="200" cy="218" rx="140" ry="14" fill="rgba(0,0,0,.25)"/>
+          ${chipStack(96, 208, 4, '#E5533D')}
+          ${playingCard(132, 80, -8, 'A', '♠', false)}
+          ${playingCard(188, 76, 9, 'J', '♥', true)}
+          <g transform="translate(316 100)">
+            <circle r="32" fill="rgba(0,0,0,.25)" cy="4"/>
+            <circle r="32" fill="#F2A541"/>
+            <circle r="25" fill="none" stroke="#1A1205" stroke-width="2" stroke-dasharray="4 5" opacity=".5"/>
+            <text y="10" text-anchor="middle" font-family="Bricolage Grotesque, Inter, sans-serif" font-size="28" font-weight="800" fill="#1A1205">21</text>
+          </g>
+        </svg>`,
+
+      shuffle: `
+        <svg viewBox="0 0 400 250" aria-hidden="true">
+          <defs>
+            <linearGradient id="board" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9D3A8"/><stop offset="1" stop-color="#B98A4E"/></linearGradient>
+          </defs>
+          <polygon points="168,30 232,30 330,250 70,250" fill="url(#board)"/>
+          <polygon points="168,30 232,30 330,250 70,250" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="2"/>
+          <g stroke="rgba(60,30,10,.45)" stroke-width="2">
+            <line x1="161" y1="46" x2="239" y2="46"/>
+            <line x1="152" y1="66" x2="248" y2="66"/>
+            <line x1="140" y1="92" x2="260" y2="92"/>
+          </g>
+          <g font-family="Inter, sans-serif" font-weight="700" fill="rgba(60,30,10,.5)" text-anchor="middle">
+            <text x="200" y="61" font-size="11">3</text><text x="200" y="84" font-size="13">2</text>
+          </g>
+          <ellipse cx="186" cy="80" rx="13" ry="5" fill="#B22F25"/><ellipse cx="186" cy="78" rx="13" ry="5" fill="#E5533D"/>
+          <ellipse cx="222" cy="58" rx="10" ry="4" fill="#B5891E"/><ellipse cx="222" cy="56" rx="10" ry="4" fill="#F5C451"/>
+          <ellipse cx="206" cy="160" rx="22" ry="8" fill="#B22F25"/><ellipse cx="206" cy="156" rx="22" ry="8" fill="#E5533D"/>
+          <path d="M206 140 L 198 102" stroke="rgba(255,255,255,.7)" stroke-width="2.5" stroke-dasharray="3 7" stroke-linecap="round"/>
+          <g transform="translate(300 120) rotate(14)">
+            <rect width="56" height="100" rx="12" fill="#10161D" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+            <rect x="6" y="10" width="44" height="78" rx="6" fill="#2E5A80"/>
+            <circle cx="28" cy="58" r="11" fill="#E5533D"/>
+            <path d="M28 44 v-16 m-6 6 l6 -6 l6 6" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>`,
+
+      pinball: `
+        <svg viewBox="0 0 400 250" aria-hidden="true">
+          <defs>
+            <radialGradient id="pbBall" cx=".35" cy=".35"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#CBD0DA"/><stop offset="1" stop-color="#5E6470"/></radialGradient>
+          </defs>
+          <path d="M118 250 V104 A82 82 0 0 1 282 104 V250" fill="rgba(0,0,0,.28)" stroke="rgba(255,255,255,.6)" stroke-width="3"/>
+          <line x1="262" y1="250" x2="262" y2="112" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+          <g fill="#F5C451">
+            <circle cx="137" cy="112" r="2.5"/><circle cx="150" cy="80" r="2.5"/><circle cx="174" cy="58" r="2.5"/><circle cx="200" cy="50" r="2.5"/>
+            <circle cx="226" cy="58" r="2.5"/><circle cx="250" cy="80" r="2.5"/><circle cx="263" cy="112" r="2.5"/>
+          </g>
+          <g stroke="#fff" stroke-width="3">
+            <circle cx="168" cy="104" r="17" fill="#F2A541"/>
+            <circle cx="228" cy="100" r="17" fill="#43B581"/>
+            <circle cx="198" cy="142" r="14" fill="#E5533D"/>
+          </g>
+          <g fill="rgba(255,255,255,.85)">
+            <circle cx="168" cy="104" r="6"/><circle cx="228" cy="100" r="6"/><circle cx="198" cy="142" r="5"/>
+          </g>
+          <polygon points="132,170 132,206 156,216" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="248,170 248,206 224,216" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="160" y1="226" x2="190" y2="240" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <line x1="240" y1="226" x2="212" y2="210" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M214 196 Q 226 150 214 116" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-dasharray="2 8" stroke-linecap="round"/>
+          <circle cx="213" cy="199" r="9" fill="url(#pbBall)"/>
+          <g transform="translate(308 132) rotate(12)">
+            <rect width="46" height="84" rx="10" fill="#10161D" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+            <rect x="5" y="9" width="36" height="64" rx="5" fill="#2B3A8F"/>
+            <rect x="9" y="44" width="13" height="22" rx="3" fill="#E5533D"/><rect x="24" y="44" width="13" height="22" rx="3" fill="#2E6BD6"/>
+            <rect x="9" y="16" width="28" height="22" rx="3" fill="#F2A541"/>
+          </g>
+        </svg>`
+    };
+
+    const ICON_ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+    function cardHTML(g) {
+      const live = g.status !== 'kommer';
+      const tag = live ? 'a' : 'div';
+      let attrs = 'aria-disabled="true"';
+      if (live) {
+        attrs = `href="${g.open ? g.open[0] : g.url}"`;
+        if (g.newTab || g.open) attrs += ' target="_blank" rel="noopener"';
+        if (g.open) attrs += ` data-open='${JSON.stringify(g.open)}'`;
+      }
+      const badges = [
+        g.hybrid ? '<span class="badge hybrid">Hybrid</span>' : '',
+        !live ? '<span class="badge soon">Kommer snart</span>' : ''
+      ].join('');
+
+      return `
+        <${tag} class="card reveal${live ? '' : ' is-soon'}" ${attrs}>
+          <div class="card-art art-${g.art}">
+            ${ART[g.art] || ''}
+            <div class="badges">${badges}</div>
+          </div>
+          <div class="card-body">
+            <div class="card-kicker">${g.kicker}</div>
+            <h3>${g.title}</h3>
+            <p>${g.description}</p>
+            <div class="card-foot">
+              <div class="card-tags">${g.labels.map(l => `<span class="tag">${l}</span>`).join('')}</div>
+              <span class="card-cta">${live ? 'Spill' + ICON_ARROW : 'Snart'}</span>
+            </div>
+          </div>
+        </${tag}>`;
+    }
+
+    // Spill som skal åpne flere faner (f.eks. Hybrid Poker: spill + bord)
+    document.addEventListener('click', e => {
+      const link = e.target.closest('[data-open]');
+      if (!link) return;
+      e.preventDefault();
+      JSON.parse(link.dataset.open).forEach(url => window.open(url, '_blank'));
+    });
+
+    const moreCard = `
+      <div class="card-more reveal">
+        <div class="plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+        <strong>Flere spill på vei</strong>
+        <p>Nye spill fra gården dukker opp her etter hvert som de blir ferdige.</p>
+      </div>`;
+
+    const grid = document.getElementById('gamesGrid');
+    const searchInput = document.getElementById('search');
+    const chips = document.querySelectorAll('.chip');
+    let activeFilter = 'alle';
+
+    function render() {
+      const q = searchInput.value.trim().toLowerCase();
+      const list = GAMES.filter(g => {
+        const matchFilter =
+          activeFilter === 'alle' ||
+          (activeFilter === 'kommer' ? g.status === 'kommer' : g.tags.includes(activeFilter));
+        const matchSearch = !q || (g.title + ' ' + g.description + ' ' + g.kicker + ' ' + g.labels.join(' ')).toLowerCase().includes(q);
+        return matchFilter && matchSearch;
+      });
+
+      grid.innerHTML = list.length
+        ? list.map(cardHTML).join('') + (activeFilter === 'alle' && !q ? moreCard : '')
+        : '<div class="empty">Fant ingen spill som passer. Prøv et annet søk.</div>';
+
+      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    document.getElementById('gameCount').textContent = GAMES.length;
+    document.querySelectorAll('[data-art]').forEach(el => el.insertAdjacentHTML('afterbegin', ART[el.dataset.art]));
+
+    chips.forEach(chip => chip.addEventListener('click', () => {
+      activeFilter = chip.dataset.filter;
+      chips.forEach(c => c.setAttribute('aria-pressed', c === chip));
+      render();
+    }));
+    searchInput.addEventListener('input', render);
+
+    // Trykk "/" for å søke
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+
+    /* Tema */
+    const root = document.documentElement;
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+
+    /* Nav-kant ved scrolling */
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* Reveal ved scrolling */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    render();
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
