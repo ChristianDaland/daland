@@ -496,7 +496,7 @@
         <p class="hero-lead">Egenutviklede spill fra Løland Gård – fra klassiske terninger til hybridspill der mobilen er kontrollen.</p>
 
         <div class="hero-cta">
-          <a href="https://christiandaland.github.io/yatzy/" class="btn btn-primary">
+          <a href="https://christiandaland.github.io/yatzy/" class="btn btn-primary" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
             Spill Yatzy 3D
           </a>
@@ -516,10 +516,10 @@
       </div>
 
       <div class="hero-media reveal">
-        <a href="Stikka/" class="show-card back" aria-label="Kaste på stikka">
+        <a href="Stikka/" target="_blank" rel="noopener" class="show-card back" aria-label="Kaste på stikka">
           <div class="card-art art-stikka" data-art="stikka"></div>
         </a>
-        <a href="https://christiandaland.github.io/yatzy/" class="show-card front" aria-label="Utvalgt spill: Yatzy 3D – spill nå">
+        <a href="https://christiandaland.github.io/yatzy/" target="_blank" rel="noopener" class="show-card front" aria-label="Utvalgt spill: Yatzy 3D – spill nå">
           <div class="card-art art-yatzy" data-art="yatzy">
             <div class="badges"><span class="badge new">Utvalgt</span></div>
           </div>
@@ -646,7 +646,6 @@
         kicker: 'Fotball / puck',
         description: 'Flerbruker fotball/puck-arena med opptil 6 spillere. Styr med mobilen og følg kampen på storskjerm!',
         url: 'https://hybrid-bordspill-6p.onrender.com/score.html',
-        newTab: true,
         hybrid: true,
         tags: ['hybrid'],
         labels: ['Opptil 6 spillere'],
@@ -897,7 +896,7 @@
       let attrs = 'aria-disabled="true"';
       if (live) {
         attrs = `href="${g.open ? g.open[0] : g.url}"`;
-        if (g.newTab || g.open) attrs += ' target="_blank" rel="noopener"';
+        attrs += ' target="_blank" rel="noopener"';
         if (g.open) attrs += ` data-open='${JSON.stringify(g.open)}'`;
       }
       const badges = [
